@@ -1,5 +1,5 @@
 // ✌️
-// this file creates a development environment and loads the app
+// this file creates a development/production environment and loads the app
 
 // -- imports --
 
