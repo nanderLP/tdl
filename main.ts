@@ -6,9 +6,6 @@
 // environment variables (dotenv)
 import { config } from ".env";
 
-// server application
-import server from "./src/server.ts";
-
 // -- startup --
 
 // determine environment
@@ -33,5 +30,8 @@ const port = Deno.env.get("PORT");
 
 console.log("Starting server on port " + port);
 console.log("Local: http://localhost:" + port);
+
+// manually import the server here because the environment variables get loaded dynamically
+const { default: server } = await import("./src/server.ts");
 
 await server.listen({ port: Number(port) });

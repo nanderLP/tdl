@@ -25,6 +25,27 @@ const router = new Router();
 
 // -- routes --
 
+// root (/)
+router.get("/", (ctx) => {
+  ctx.response.body = "Hello world!";
+});
+
+// custom route (/*), this "route" won't be handled by the router, because trying to match an url-path with the router regex is very difficult
+app.use((ctx, next) => {
+  // try to parse the path as a url
+  // if it works then it's the dynamic route, which should parse the tweet and return the video file
+  // if it doesn't then just continue the middleware chain
+  try {
+    const url = new URL(ctx.request.url.pathname.substring(1));
+
+    // see issue #1
+    const pathSegments = url.pathname.split("/");
+    console.log(pathSegments);
+  } catch {
+    next();
+  }
+});
+
 // add routes to server
 app.use(router.routes());
 app.use(router.allowedMethods());

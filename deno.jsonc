@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "dev": "DENO_ENV=dev deno run -A main.ts",
-    "start": "DENO_ENV=prod deno run -A --allow-net --allow-env --allow-read main.ts"
+    "dev": "DENO_ENV=dev deno run --watch=src -A main.ts",
+    "start": "DENO_ENV=prod deno run --allow-net --allow-env --allow-read main.ts"
   },
   "importMap": "./import_map.json"
 }
