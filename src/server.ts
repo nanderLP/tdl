@@ -3,6 +3,7 @@
 // -- imports --
 
 // web server (oak)
+import { resolve } from "https://deno.land/std@0.140.0/path/win32.ts";
 import { Application, Router } from "oak";
 
 // -- twitter --
@@ -41,7 +42,35 @@ app.use(async (ctx, next) => {
     // ignore request if no tweet id was found
     if (!tweetId) return next();
 
-    // get tweet video link
+    // get tweet data
+    const params = new URLSearchParams();
+    params.set("id", tweetId);
+
+    // see issue #2
+    const endpoint =
+      `https://api.twitter.com/1.1/statuses/show.json?${params.toString()}`;
+
+    const tweetRes = await fetch(
+      endpoint,
+      {
+        headers: {
+          Authorization: "Bearer " + twitterToken,
+        },
+      },
+    );
+
+    if (!tweetRes.ok) return ctx.response.body = "Tweet not found";
+
+    const tweet = await tweetRes.json();
+
+    // get video link
+    // this retrieves the last item in the video variants array, which is the highest quality video
+    const video = tweet.extended_entities.media[0].video_info.variants.pop()
+
+    // return video
+    ctx.response.status = 302
+    ctx.response.headers.set("Location", video.url) 
+
   } catch {
     next();
   }
