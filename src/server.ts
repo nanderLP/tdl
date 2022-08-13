@@ -3,13 +3,13 @@
 // -- imports --
 
 // web server (oak)
-import { resolve } from "https://deno.land/std@0.140.0/path/win32.ts";
 import { Application, Router } from "oak";
 
 // -- twitter --
 
-// load twitter api bearer token
-const twitterToken = Deno.env.get("TWITTER_BEARER");
+// declare twitter api token variable
+// we can't initialize it right away, see issue #3
+let twitterToken: string;
 
 // -- server --
 
@@ -65,12 +65,11 @@ app.use(async (ctx, next) => {
 
     // get video link
     // this retrieves the last item in the video variants array, which is the highest quality video
-    const video = tweet.extended_entities.media[0].video_info.variants.pop()
+    const video = tweet.extended_entities.media[0].video_info.variants.pop();
 
     // return video
-    ctx.response.status = 302
-    ctx.response.headers.set("Location", video.url) 
-
+    ctx.response.status = 302;
+    ctx.response.headers.set("Location", video.url);
   } catch {
     next();
   }
@@ -80,5 +79,16 @@ app.use(async (ctx, next) => {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-// return built server
-export default app;
+// build initialization function
+// see issue #3
+const init = () => {
+  const twitterEnv = Deno.env.get("TWITTER_BEARER");
+  if (!twitterEnv) {
+    throw new Error("TWITTER_BEARER environment variable not set");
+  }
+  twitterToken = twitterEnv;
+  return app;
+};
+
+// return initialization function
+export default init;
