@@ -5,6 +5,9 @@
 // web server (oak)
 import { Application, Router } from "oak";
 
+// web page
+import page from "./pages.tsx";
+
 // -- twitter --
 
 // declare twitter api token variable
@@ -21,7 +24,10 @@ const router = new Router();
 
 // root (/)
 router.get("/", (ctx) => {
-  ctx.response.body = "Hello world!";
+  console.log(page);
+
+  ctx.response.type = "text/html";  
+  ctx.response.body = page;
 });
 
 // custom route (/*), this "route" won't be handled by the router, because trying to match an url-path with the router regex is very difficult
