@@ -5,9 +5,6 @@
 // web server (oak)
 import { Application, Router } from "oak";
 
-// web page
-import page from "./pages.tsx";
-
 // -- twitter --
 
 // declare twitter api token variable
@@ -20,18 +17,21 @@ let twitterToken: string;
 const app = new Application();
 const router = new Router();
 
-// -- routes --
-
-// root (/)
-router.get("/", (ctx) => {
-  console.log(page);
-
-  ctx.response.type = "text/html";  
-  ctx.response.body = page;
-});
-
-// custom route (/*), this "route" won't be handled by the router, because trying to match an url-path with the router regex is very difficult
+// catch all middlware, to handle the advanced matching of url path routes
 app.use(async (ctx, next) => {
+  if (
+    ctx.request.url.pathname === "/"
+    // see issue #5
+    // ctx.request.url.pathname === "/favicon.ico"
+  ) {
+    await ctx.send({
+      root: `${Deno.cwd()}/src/pages`,
+      index: "index.html",
+    });
+  }
+
+  console.log(ctx.request.url.pathname);
+
   // try to parse the path as a url
   // if it works then it's the dynamic route, which should parse the tweet and return the video file
   // if it doesn't then just continue the middleware chain
@@ -69,6 +69,11 @@ app.use(async (ctx, next) => {
 
     const tweet = await tweetRes.json();
 
+    // check if tweet has a video
+    if (!tweet.extended_entities?.media) {
+      return ctx.response.body = "Tweet does not have a video";
+    }
+
     // get video link
     // this retrieves the last item in the video variants array, which is the highest quality video
     const video = tweet.extended_entities.media[0].video_info.variants.pop();
@@ -76,7 +81,8 @@ app.use(async (ctx, next) => {
     // return video
     ctx.response.status = 302;
     ctx.response.headers.set("Location", video.url);
-  } catch {
+  } catch (e) {
+    console.log(e);
     next();
   }
 });
