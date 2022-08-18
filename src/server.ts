@@ -30,8 +30,6 @@ app.use(async (ctx, next) => {
     });
   }
 
-  console.log(ctx.request.url.pathname);
-
   // try to parse the path as a url
   // if it works then it's the dynamic route, which should parse the tweet and return the video file
   // if it doesn't then just continue the middleware chain
@@ -81,8 +79,7 @@ app.use(async (ctx, next) => {
     // return video
     ctx.response.status = 302;
     ctx.response.headers.set("Location", video.url);
-  } catch (e) {
-    console.log(e);
+  } catch {
     next();
   }
 });
