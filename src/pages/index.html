@@ -8,6 +8,7 @@
     <title>TDL</title>
   </head>
   <body>
+    <div class="center">
     <main>
       <h1>TDL</h1>
       <form>
@@ -15,7 +16,13 @@
         <input name="url" type="url" placeholder="Tweet URL" />
         <button type="submit" disabled>redirect</button>
       </form>
+      <div class="footer">
+        <hr/>
+        <div class="links">
+          <a href="https://nander.dev">creator</a><a href="https://github.com/nanderLP/tdl">repo</a></div>
+      </div>
     </main>
+  </div>
     <script>
       const form = document.querySelector("form");
       const button = form.querySelector("button");
@@ -45,12 +52,16 @@
           sans-serif;
       }
 
-      main {
+      .center {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         height: 100vh;
+      }
+
+      h1 {
+        text-align: center;
       }
 
       form > * {
@@ -59,6 +70,24 @@
 
       form > button {
         margin-top: 0.5rem;
+      }
+
+      .footer {
+        margin-top: 1rem;
+      }
+
+      hr {
+        width: 100%;
+      }
+
+      .links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .links > a:visited {
+        color: blue;
       }
     </style>
   </body>
