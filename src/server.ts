@@ -72,9 +72,23 @@ app.use(async (ctx, next) => {
       return ctx.response.body = "Tweet does not have a video";
     }
 
+    type Variant = {
+      bitrate?: number;
+      content_type: string;
+      url: string;
+    };
+
+    // filter out mpeg files
+    let variants = tweet.extended_entities.media[0].video_info
+      .variants as Variant[];
+    variants = variants.filter((v) => v.content_type === "video/mp4");
+
     // get video link
     // this retrieves the last item in the video variants array, which is the highest quality video
-    const video = tweet.extended_entities.media[0].video_info.variants.pop();
+    const video = variants.pop();
+
+    // if no video was found, return an error
+    if (!video) return ctx.response.body = "No valid video file found";
 
     // return video
     ctx.response.status = 302;
