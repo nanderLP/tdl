@@ -1,9 +1,9 @@
 <div align="center">
-<img width="50%" src="https://user-images.githubusercontent.com/39925779/185620144-eed19800-0b79-40f5-8c0f-c11d80b1e0fb.svg" alt="Logo"/>
-<h3>Instantly download your favorite videos from Twitter</h3>
- </div>
- 
-<hr/>
+    <img width="50%" src="https://user-images.githubusercontent.com/39925779/185620144-eed19800-0b79-40f5-8c0f-c11d80b1e0fb.svg" alt="Logo" />
+    <h3>Instantly download your favorite videos from Twitter</h3>
+</div>
+
+<hr />
 
 ## How to use it
 
@@ -26,9 +26,10 @@ Everything is written in [TypeScript](https://www.typescriptlang.org/) and runs 
 ## How to deploy it yourself
 
 ### Requirements
-| Software | Version |
-| --------------- | --------------- |
-| Deno | 1.24.3 or higher |
+
+| Software | Version          |
+| -------- | ---------------- |
+| Deno     | 1.24.3 or higher |
 
 ### Setting up environment
 
@@ -37,6 +38,7 @@ Everything is written in [TypeScript](https://www.typescriptlang.org/) and runs 
 3. Enter a port in PORT (setting PORT to `0` will allow the operating system to select the port)
 
 ### Starting
+
 ```sh
 deno task start
 ```
