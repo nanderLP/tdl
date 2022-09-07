@@ -16,7 +16,7 @@ Use the stupidly simple web interface to get the raw video link of any Tweet URL
 ### 2. Auto Redirect
 
 Append the Tweet to the base URL to get instantly redirected to its video.  
-Example: `https://tdl.nander.dev/https://twitter.com/i/status/1560616735748698114`
+Example: `https://tdl.nander.dev/https://twitter.com/i/status/1549416872453574658`
 
 ## How it works
 
